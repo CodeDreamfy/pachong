@@ -1,6 +1,6 @@
 module.exports = function(app){
   /* GET home page. */
   app.get('/', function(req, res){
-    res.render('index', { title: 'hello Express'})
+    res.render('index', { title: 'hello Express', content: 'welcome to tosojs 博客'})
   })
 };

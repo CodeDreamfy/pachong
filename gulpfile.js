@@ -8,6 +8,8 @@ var autoprefixer = require("autoprefixer");
 var rename = require("gulp-rename");
 var cssimport = require("postcss-import");
 var cssnested = require("postcss-nested");
+var order = require("gulp-order");
+var concat = require("gulp-concat");
 
 gulp.task('postcss', function(){
   var processors = [
@@ -29,9 +31,10 @@ gulp.task('babel', function(){
           .pipe(babel({
             presets: ['es2015']
           }))
-          .pipe(gulp.dest('./public/js/'))
-})
+          .pipe(concat("main.js"))
+          .pipe(gulp.dest('./public/js/dest'))
 
+});
 gulp.task('watch', function(){
   gulp.watch('./public/css/src/**/*.css',['postcss']);
   gulp.watch('./public/js/src/**/*.js',['babel']);

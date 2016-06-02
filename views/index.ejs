@@ -5,7 +5,12 @@
     <link rel='stylesheet' href='/css/main.min.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <%- include header %>
+      <div class="content">
+        <h1 class="content tit"><%= content %></h1>
+      </div>
+    <%- include footer %>
+    <script src="/js/lib/jquery-2.1.4.js" charset="utf-8"></script>
+    <script src="/js/dest/main.js" charset="utf-8"></script>
   </body>
 </html>
