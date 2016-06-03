@@ -21,10 +21,12 @@ html,body {
       }
     }
     .content {
-      min-height: 300px;
       padding: 20px 10px;
       border: 1px solid #f1fd1f1;
       overflow: hidden;
+      .contain {
+        height: auto; min-height: 300px;
+      }
     }
   }
   .footer {

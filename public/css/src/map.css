@@ -1,0 +1,14 @@
+.map {
+  .wrap {
+    width: 500px;
+    border: 1px solid #ccc;
+    margin: 20px auto;
+    padding: 10px 20px;
+    .item {
+      width: 90%; margin: 0 auto;
+      label { height: 30px; display: inline-block; }
+      input { width: 200px; height: 30px; line-height: 30px; padding-left: 10px; border: 1px solid #f1f1f1;}
+      button { margin-left: 20px; height: 30px; line-height: 30px; vertical-align: middle;}
+    }
+  }
+}
