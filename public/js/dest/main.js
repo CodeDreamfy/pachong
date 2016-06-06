@@ -19,9 +19,7 @@
       dataType: 'json',
       data: { url: params },
       success: function success(e) {
-        var $img = $("<img />");
-        $img.attr('src', e.url);
-        $imgshow.append($img);
+        console.log(e);
       },
       error: function error(_error) {
         console.dir(_error);

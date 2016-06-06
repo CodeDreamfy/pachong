@@ -1,4 +1,6 @@
 var phmap = require('../data/phantomjsDemo.js');
+var supers = require('../data/superagentDemo.js');
+
 module.exports = function(app){
   /* GET home page. */
   app.get('/', function(req, res){
@@ -9,6 +11,6 @@ module.exports = function(app){
   })
   app.post('/mapsearch', function(req,res){
     var url = req.body.url;
-    phmap(url, res)
+    supers(url)
   })
 };
