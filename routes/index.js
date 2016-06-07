@@ -11,6 +11,7 @@ module.exports = function(app){
   })
   app.post('/mapsearch', function(req,res){
     var url = req.body.url;
-    supers(url)
+    supers(url);
+    res.send({tit:'ok'})
   })
 };
