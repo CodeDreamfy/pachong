@@ -1,3 +1,5 @@
+var phantom = require('phantom');
+
 function phmap(url, res){
   var sitepage = null;
   var phInstance = null;
