@@ -1,4 +1,5 @@
 .map {
+  overflow: auto;
   .wrap {
     width: 500px;
     border: 1px solid #ccc;
@@ -10,5 +11,6 @@
       input { width: 200px; height: 30px; line-height: 30px; padding-left: 10px; border: 1px solid #f1f1f1;}
       button { margin-left: 20px; height: 30px; line-height: 30px; vertical-align: middle;}
     }
+    .imgbox { width: 500px; height: 300px; overflow-y: auto; margin: 10px auto;}
   }
 }
