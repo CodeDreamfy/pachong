@@ -7,7 +7,7 @@ var http = require('http');
 var chace = []; //存取爬取到的链接
 var now_url = '';
 function asyncCall(path){
-  now_url = url.parse(path).hostname;
+  now_url = path
   this.bigCall = function(u){
     var count = 0;
     var self = this;
@@ -54,19 +54,15 @@ function asyncCall(path){
 
             // href = pathname + href;
             //自己写匹配规则
-            if(href[0] != '/'){
-              href = '/' + href;
-            }
-            if(href.match('/forum')){
-              href = '/bbs' + href;
-            }
+    
+            href = url.resolve(now_url, href);
             chace.push(href);
             count++;
           }
         });
         console.log(requestpath + '地址下爬取到----' + count + '有限链接');
         setTimeout(function(){
-          var newurl = 'http://' + now_url + chace.shift();
+          var newurl = chace.shift();
           self.bigCall(newurl);
         },1000);
       });
@@ -80,3 +76,7 @@ new asyncCall("http://open.iot.10086.cn/bbs/forum.php").bigCall();
 process.on('uncaughtException', function (err) {
     console.log(err);
 }); 
+
+// var url = require('url');
+// p = url.resolve('http://open.iot.10086.cn/bbs/forum.php', 'forum.php?mod=redirect&tid=587&goto=la') 
+// console.log(p)
