@@ -1,12 +1,12 @@
-let superagent = require('superagent');
-let cheerio = require('cheerio');
-let async = require('async');
+var superagent = require('superagent');
+var cheerio = require('cheerio');
+var async = require('async');
 
 function asyncCall(url){
 
-  let concurrencyCount = 0; // 并发连接数的计数器
-  let itemList = [];
-  let commit = [];
+  var concurrencyCount = 0; // 并发连接数的计数器
+  var itemList = [];
+  var commit = [];
   fetch(url, function(list){
     async.mapLimit(list, 26, function(item, callback){
       concurrencyCount++;
@@ -37,17 +37,17 @@ function asyncCall(url){
   })
 
   function fetch(url, cb){
-    let items = [];
+    var items = [];
     var promise = new Promise(function(resolve, reject){
       superagent.get(url).end(function(err, sres){
         if(err){
           return console.error(err);
         }
-        let $ = cheerio.load(sres.text);
+        var $ = cheerio.load(sres.text);
         $('a[href!=""][href!="javascript:;"][href*="http://"]').map(function(i, e){
-          let _this = $(e);
-          let tit = _this.text();
-          let hf = _this.attr('href');
+          var _this = $(e);
+          var tit = _this.text();
+          var hf = _this.attr('href');
           if(hf.indexOf('.exe'))
           items[i] = { 'tit' : tit, 'href' : hf, 'active': false};
         })
