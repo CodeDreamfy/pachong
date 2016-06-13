@@ -31,7 +31,6 @@ gulp.task('babel', function(){
           .pipe(babel({
             presets: ['es2015']
           }))
-          .pipe(concat("main.js"))
           .pipe(gulp.dest('./public/js/dest'))
 
 });
