@@ -1,7 +1,9 @@
 //master
 $(function(){
-  var $resolveBtn = $('.resolveBtn');
-  var $overlay = $('.overlay');
+  let $resolveBtn = $('.resolveBtn');
+  let $overlay = $('.overlay');
+  let $content = $('.contentWrap');
+  let $container = $('.container');
 
   $resolveBtn.on('click', function(){
     let $url = $('#InputUrl');
@@ -19,6 +21,9 @@ $(function(){
         _this.removeClass('btn-default active').addClass('btn-primary').prop('disabled', '');
         $overlay.fadeOut();
         _this.text("开始解析");
+        $container.animate({ "margin-top": 20}, 800, function(){
+          $content.fadeIn(300)
+        });
       }
     })
   })

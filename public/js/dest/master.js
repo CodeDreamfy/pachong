@@ -4,6 +4,8 @@
 $(function () {
   var $resolveBtn = $('.resolveBtn');
   var $overlay = $('.overlay');
+  var $content = $('.contentWrap');
+  var $container = $('.container');
 
   $resolveBtn.on('click', function () {
     var $url = $('#InputUrl');
@@ -21,6 +23,9 @@ $(function () {
         _this.removeClass('btn-default active').addClass('btn-primary').prop('disabled', '');
         $overlay.fadeOut();
         _this.text("开始解析");
+        $container.animate({ "margin-top": 20 }, 800, function () {
+          $content.fadeIn(300);
+        });
       }
     });
   });
