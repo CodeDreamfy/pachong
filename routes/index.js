@@ -1,5 +1,5 @@
 var phmap = require('../data/phantomjsDemo.js');
-var supers = require('../data/superagentDemo.js');
+var asyncCall = require('../data/superagentDemo.js');
 
 module.exports = function(app){
   /* GET home page. */
@@ -10,8 +10,8 @@ module.exports = function(app){
     res.render('map', { title: 'hello Express', content: ""})
   })
   app.post('/mapsearch', function(req,res){
-    var url = req.body.url;
-    supers(url);
-    res.send({tit:'ok'})
+    var async_call = new asyncCall("http://open.iot.10086.cn/bbs/forum.php");
+    async_call.superCall();
+    res.json({date: new Date()})
   })
 };
