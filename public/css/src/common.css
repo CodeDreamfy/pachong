@@ -32,10 +32,6 @@ img,input,select,option {
   background: transparent;
   outline: 0;
 }
-h1,h2,h3 {
-  font-size: 100%;
-  font-weight: normal;
-}
 ul {
   list-style: none;
 }
@@ -45,10 +41,6 @@ body {
 }
 
 /* utils */
-.line {
-  height: 10px;
-  background: #04be02;
-}
 .clearfix:after {
   content: ' ';
   display: block;
