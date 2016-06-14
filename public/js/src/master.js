@@ -26,5 +26,9 @@ $(function(){
         });
       }
     })
-  })
+  });
+
+  // $content.on('click', '.info-detail', function(){
+  //   $(this).modal()
+  // })
 })

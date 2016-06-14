@@ -12,8 +12,6 @@ body,h1,h2,h3,p,ul,ol,li,dt,dd,dl,input,select {
 html,body {
   -webkit-user-select: none;
   user-select: none;
-  height: 100%;
-  overflow: hidden;
   -webkit-tap-highlight-color: transparent;
 }
 a,img {
