@@ -1,4 +1,3 @@
-var asyncCall = require('../data/superagentDemo.js');
 
 module.exports = function(app){
   /* GET home page. */
