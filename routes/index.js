@@ -4,6 +4,9 @@ module.exports = function(app){
   app.get('/', function(req, res){
     res.render('master', { title: 'hello Express', content: 'welcome to tosojs 博客'})
   });
+  app.get('/details', function(req, res){
+    res.render('details', { title: 'hello Express', content: 'welcome to tosojs 博客'})
+  });
   app.post('/mapsearch', function(req,res){
     // var async_call = new asyncCall("http://open.iot.10086.cn/bbs/forum.php");
     // async_call.superCall();
