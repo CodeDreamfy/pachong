@@ -118,26 +118,47 @@ $(function () {
 
   /* details */
   var $listItem = $('.detailsWrapper .list-wrapper');
-  var $img = $listItem.find('.smallImg img');
+  var $listActive = $listItem.find('.smallImg');
+  var $img = $('img', $listActive);
 
+  /*
+    * 当图片加载完毕的时候执行计算img
+  */
   $img.on('load', function () {
-    var childobj = { w: $img.width(), h: $img.height() };
-    fullImg(childobj, $img);
-  });
-  $(window).on('resize', function () {
-    var childobj = { w: $img.width(), h: $img.height() };
+    var $this = $(this);
+    setFull($this);
   });
 
-  function fullImg(childobj) {
-    var $a = $listItem.find('.smallImg');
-    var obj = { w: $a.width(), h: $a.height() };
+  /*
+    * 当窗口改变大小的时候重新计算img
+  */
+  var clearRs = null;
+  $(window).on('resize', function () {
+    if (!!clearRs) {
+      clearTimeout(clearRs);
+    }
+    clearRs = setTimeout(function () {
+      $img.each(function (i, e) {
+        var $this = $(e);
+        setFull($this);
+      });
+    }, 250);
+  });
+
+  //fullImg
+  function setFull(context) {
+    var $obj = context.closest('a');
+    var obj = { w: $obj.width(), h: $obj.height() };
+    var childobj = { w: context.width(), h: context.height() };
+    fullImg(obj, childobj, context);
+  }
+  function fullImg(obj, childobj, context) {
     var oScale = obj.w / obj.h;
     var cScale = childobj.w / childobj.h;
     if (cScale > oScale) {
-      var x = Math.ceil(obj.h / cScale);
+      var x = Math.ceil(obj.h * cScale);
       $(context).css({ width: x, height: obj.h, marginTop: -obj.h / 2, marginLeft: -x / 2 });
-    }
-    if (oScale > cScale) {
+    } else {
       var y = Math.ceil(obj.w / cScale);
       $(context).css({ width: obj.w, height: y, marginTop: -y / 2, marginLeft: -obj.w / 2 });
     }

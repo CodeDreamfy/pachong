@@ -40,8 +40,8 @@
 
 /* details */
 .detailsWrapper{ width: 80%; margin: 20px auto; }
-.detailsWrapper .list-wrapper .smallImg { height: 360px; overflow: hidden; display: block; position: relative;}
-.detailsWrapper .list-wrapper .smallImg img { position: absolute;top:50%;left:50%;}
+.detailsWrapper .list-wrapper .list-group-item .smallImg { width: 100%; height: 360px; overflow: hidden; display: block; position: relative;}
+.detailsWrapper .list-wrapper .list-group-item .smallImg img { position: absolute;top:50%;left:50%;}
 
 .overlay .cssload-loader {
 	position: absolute;
@@ -282,6 +282,3 @@
 		height: 0%;
 	}
 }
-
-
-
