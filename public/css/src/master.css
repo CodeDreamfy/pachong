@@ -39,9 +39,15 @@
 
 
 /* details */
-.detailsWrapper{ width: 80%; margin: 20px auto; }
+.detailsWrapper{ width: 80%; margin: 20px auto;}
+.detailsWrapper .list-wrapper .list-group-item .contentWrap { position: relative;}
+.detailsWrapper .list-wrapper .list-group-item .contentWrap a { position: absolute; right: 30px; top: 4px;}
+.detailsWrapper .list-wrapper .list-group-item .list-title { color: #fff; background: #337ab7; border-color: #ddd;}
 .detailsWrapper .list-wrapper .list-group-item .smallImg { width: 100%; height: 360px; overflow: hidden; display: block; position: relative;}
 .detailsWrapper .list-wrapper .list-group-item .smallImg img { position: absolute;top:50%;left:50%;}
+.details .back { position: fixed; top: 10px; right: 40px; }
+.details .pagination { float: right;}
+
 
 .overlay .cssload-loader {
 	position: absolute;

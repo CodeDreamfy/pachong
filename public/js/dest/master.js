@@ -6,161 +6,109 @@ $(function () {
   var $overlay = $('.overlay');
   var $content = $('.contentWrap');
   var $container = $('.container');
-  var path = '';
-
-  $resolveBtn.on('click', function () {
-    var _this = $(this);
-    _this.text("正在解析");
-    _this.removeClass('btn-primary').addClass('btn-default').prop('disabled', 'disabled');
-    _this.next().fadeIn();
-    setTimeout(function () {
-      setSearchEnd(_this, true);
-    }, 2000);
-  });
+  var $tbody = $('.innerContent', $content);
+  var url = '';
+  var path = "http://192.168.0.218:3000";
 
   /*
-  $resolveBtn.on('click', function(){
-    let $url = $('#InputUrl');
-    path = $url.val().trim();
-    let _this = $(this);
-    if($url.val().length == 0){
+    ALL Event
+   */
+  $resolveBtn.on('click', function () {
+    var $url = $('#InputUrl').val().trim();
+    var _this = $(this);
+    if ($url.length == 0) {
       return false;
     }
-    _this.removeClass('btn-primary').addClass('btn-default active').prop('disabled', 'disabled');
+    _this.removeClass('btn-primary').addClass('btn-default').prop('disabled', 'disabled');
     _this.text("正在解析");
-    $overlay.fadeIn();
-    $.ajax({
-      url: 'http://192.168.0.218:3000/crawler/start',
-      method: 'post',
-      dataType: 'json',
-      data: { url: path},
-      success: function(e){
-        if(e.errno == 200){
-          setSearchEnd(_this, true);
-          // var mapData = setInterval(function(){
-          //   $.ajax({
-          //     url: 'http://192.168.0.218:3000/crawler/mapsearch',
-          //     method: 'post',
-          //     dataType: 'json',
-          //     data: { url: path},
-          //     success: function(e){
-          //       if(e.errno == 200){
-          //         clearTimeout(mapData);
-          //         setData(e);
-          //       }
-          //     }
-          //   })
-          // }, 5000)
-        }else {
-          setSearchEnd(_this);
-        }
-      }
-    })
+    _this.next().fadeIn();
+    resolveUrl($url, _this);
   });
-  */
 
-  function setSearchEnd(context) {
-    context.removeClass('btn-default').addClass('btn-primary').prop('disabled', '');
-    context.next().fadeOut();
-    if (arguments[1]) {
-      context.text("开始解析");
-      $container.animate({ "margin-top": 20 }, 800, function () {
-        $content.find('.load-data').show();
-        $content.fadeIn(300);
-      });
-    } else {
-      alert("地址解析出错！");
-      context.text("重新解析");
-    }
-  };
+  /*
+    ALL Ajax
+   */
+  intoPage(showList);
+  function intoPage(cb) {
+    $.ajax({
+      url: path + '/crawler/getcrawlerlist',
+      dataType: 'json',
+      method: 'post',
+      success: function success(e) {
+        if (e.data.data == 0) {
+          var $tr = $('<tr><td class="col-md-12" colspan="4">暂无数据</td></tr>');
+          $tbody.empty().append($tr);
+        } else {
+          setTable(e.data, cb);
+        }
+      },
+      error: function error(err) {
+        console.dir(err);
+      }
+    });
+  }
 
-  function setData(e) {
-    // console.log(data);
-    var obj = e.data.data;
-    if (obj.length == 0) {
-      $content.find('.panel-body .load-data>span ').fadeOut();
-      $content.find('.panel-body .load-data p ').text('暂无数据');
-      return;
-    }
+  function setTable(data, cb) {
+    var obj = data.data;
     var docFrame = document.createDocumentFragment();
-    console.log(obj);
     for (var i = 0; i < obj.length; i++) {
-      var $item = $(['<div class="col-sm-4 col-md-3 item">', '  <div class="thumbnail">', '    <a class="img-show"></a>', '    <div class="caption">', '      <h3></h3>', '      <p class="keyword"></p>', '      <p><a href="#" class="btn btn-primary info-detail"  role="button" >查看详情</a></p>', '    </div>', '  </div>', '</div>'].join(' '));
-      $item.find('.img-show').css({ "background": obj.img, "background-size": 'cover' });
-      $item.find('.caption h3').text(obj.title);
-      $item.find('.caption .keyword').text(obj.keyword);
+      var $item = $(['<tr>', '  <td class="url"></td>', '  <td class="tit"></td>', '  <td class="size"></td>', '  <td class="op"><a href="/details" class="btn btn-default seeall">查看详情</a><a href="javascript:;" class="btn btn-default delete">删除</a></td>', '</tr>'].join(' '));
+      $item.find('.url').text(obj[i].indexurl);
+      $item.find('.tit').text(obj[i].title);
+      $item.find('.size').text(obj[i].count);
+      $item.find('.op .seeall').attr('href', "/details?id=" + obj[i].id);
       $(docFrame).append($item);
     }
-    console.log("---append---");
-    var $row = $('<div class="row"></div>');
-    $row.append(docFrame);
-    console.log($row);
-    $content.find('.panel-body .load-data').fadeOut();
-    $content.find('.panel-body').append($row);
+    $tbody.empty().append(docFrame);
+    !!cb && cb();
   }
 
-  var model_index;
-  $content.on('click', '.info-detail', function () {
-    var _this = $(this);
-    model_index = _this.closest('.item').index();
-    $('#myModal').modal();
-  });
-  $('#myModal').on('show.bs.modal', function (event) {
-    var modal = $(this);
-    modal.find('.modal-title').text();
-    modal.find('.modal-body').text();
-  });
-  $('#myModal').on('hide.bs.modal', function (event) {
-    var modal = $(this);
-    modal.find('.modal-title').text('');
-    modal.find('.modal-body').text('');
-  });
-
-  /* details */
-  var $listItem = $('.detailsWrapper .list-wrapper');
-  var $listActive = $listItem.find('.smallImg');
-  var $img = $('img', $listActive);
-
-  /*
-    * 当图片加载完毕的时候执行计算img
-  */
-  $img.on('load', function () {
-    var $this = $(this);
-    setFull($this);
-  });
-
-  /*
-    * 当窗口改变大小的时候重新计算img
-  */
-  var clearRs = null;
-  $(window).on('resize', function () {
-    if (!!clearRs) {
-      clearTimeout(clearRs);
-    }
-    clearRs = setTimeout(function () {
-      $img.each(function (i, e) {
-        var $this = $(e);
-        setFull($this);
-      });
-    }, 250);
-  });
-
-  //fullImg
-  function setFull(context) {
-    var $obj = context.closest('a');
-    var obj = { w: $obj.width(), h: $obj.height() };
-    var childobj = { w: context.width(), h: context.height() };
-    fullImg(obj, childobj, context);
+  function resolveUrl(url, context) {
+    $.ajax({
+      url: path + '/crawler/start',
+      method: 'post',
+      dataType: 'json',
+      data: { 'url': url },
+      success: function success(e) {
+        if (e.errno == 0) {
+          console.log('--start---', e);
+          var mapData = setInterval(function () {
+            $.ajax({
+              url: path + '/crawler/mapsearch',
+              method: 'post',
+              dataType: 'json',
+              data: { 'url': url },
+              success: function success(e) {
+                if (e.errno == 0) {
+                  console.log(e);
+                  clearTimeout(mapData);
+                  context.text('开始解析');
+                  context.next().fadeOut();
+                  $container.data('show') ? intoPage() : intoPage(showList); //解析完重新调用list，显示出列表
+                }
+              }
+            });
+          }, 5000);
+        } else if (e.errno == 1) {
+          alert("上一个URL正在爬取，请稍后再试！");
+          return;
+        } else if (e.errno == 2) {
+          alert("该URL已经爬过了，请从下列表格查找！");
+          return;
+        }
+      },
+      error: function error(err) {
+        console.dir(err);
+      }
+    });
   }
-  function fullImg(obj, childobj, context) {
-    var oScale = obj.w / obj.h;
-    var cScale = childobj.w / childobj.h;
-    if (cScale > oScale) {
-      var x = Math.ceil(obj.h * cScale);
-      $(context).css({ width: x, height: obj.h, marginTop: -obj.h / 2, marginLeft: -x / 2 });
-    } else {
-      var y = Math.ceil(obj.w / cScale);
-      $(context).css({ width: obj.w, height: y, marginTop: -y / 2, marginLeft: -obj.w / 2 });
-    }
+
+  /*
+    list显示隐藏
+   */
+  function showList() {
+    $container.stop(true, true).animate({ "margin-top": 20 }, 800);
+    $container.data('show', true);
+    $content.fadeIn();
   }
 });
